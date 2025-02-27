@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 
 const Timer = ({timer, setTimer, isGameOver}) => {
     // We need ref in this, because we are dealing
