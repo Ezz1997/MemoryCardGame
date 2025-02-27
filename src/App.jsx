@@ -18,6 +18,9 @@ export default function App() {
   const [isDone, setIsDone] = useState(new Set());
   const [timer, setTimer] = useState("00:20");
   
+  // This function Creates a deep copy of the images list, then
+  // shuffles them and gets the first N images, and lastly duplicates
+  // and concatenates it with shuffled list 
   function updateImages() {
     let temp_images = structuredClone(Images);
     shuffleImages(temp_images);
@@ -40,6 +43,12 @@ export default function App() {
     }
   }
 
+
+  // This function handles the flipping of a card
+  // only 2 images can be flipped at once
+  // a buffer is used to save 2 images at most
+  // when user selects 2 identical images, 
+  // they will be moved to the isDone Set
   function handleFlip(id, imageURL) {
     const newMap = new Map(cards);
     let bufferMap = new Map(imageBuffer);
@@ -57,22 +66,17 @@ export default function App() {
       bufferMap.set(id, imageURL);
     }
 
+    // check if the 2 images are identical
     if (bufferMap.size === 2) {
       const bufferSet = new Set(bufferMap.values());
       if (bufferSet.size === 1) {
         setIsDone(new Set([...isDone, ...bufferSet]));
         bufferMap = new Map();
-      } else {
-        console.log("Different Images");
       }
     }
 
     setImageBuffer(bufferMap);
   }
-
-  useEffect(() => {
-    console.log(isDone);
-  }, [isDone]);
 
   // resetting game params on new game
   function resetParams() {
