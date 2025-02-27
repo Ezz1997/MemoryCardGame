@@ -1,0 +1,1 @@
+.flip-card{perspective:1000px;width:200px;height:300px;position:relative;transform-style:preserve-3d;transition:transform .5s}.front{transform:rotateY(0)}.back{transform:rotateY(180deg)}.center-element{display:flex;justify-content:center}.highlight-correct{box-shadow:#4207d6b9 0 5px}
