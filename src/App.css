@@ -1,0 +1,25 @@
+.flip-card{
+    perspective: 1000px;
+    width: 200px;
+    height: 300px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.front {
+    transform: rotateY(0deg);
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.center-element{
+    display: flex;
+    justify-content: center;
+}
+
+.highlight-correct{
+    box-shadow: rgba(66, 7, 214, 0.725) 0px 5px;
+}
