@@ -114,7 +114,7 @@ export default function App() {
                 alt={item.title}
                 loading="lazy"
                 onClick={
-                  isDone.has(item.img) || timer === "00:00"
+                  isDone.has(item.img) || timer === "00:00" || !seconds
                     ? null
                     : () => handleFlip(idx, item.img)
                 }
