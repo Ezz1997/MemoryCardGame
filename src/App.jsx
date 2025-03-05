@@ -8,6 +8,7 @@ import Images from "./Images";
 import "./App.css";
 import BlueCard from "./assets/blue-card.png";
 import Timer from "./components/Timer";
+import BasicSelect from "./components/BasicSelect";
 
 const UNIQUE_IMAGES_NUM = 6;
 
@@ -16,11 +17,12 @@ export default function App() {
   const [images, setImages] = useState([]);
   const [imageBuffer, setImageBuffer] = useState(new Map());
   const [isDone, setIsDone] = useState(new Set());
-  const [timer, setTimer] = useState("00:20");
-  
+  const [timer, setTimer] = useState("");
+  const [seconds, setSeconds] = useState("");
+
   // This function Creates a deep copy of the images list, then
   // shuffles them and gets the first N images, and lastly duplicates
-  // and concatenates it with shuffled list 
+  // and concatenates it with shuffled list
   function updateImages() {
     let temp_images = structuredClone(Images);
     shuffleImages(temp_images);
@@ -43,11 +45,10 @@ export default function App() {
     }
   }
 
-
   // This function handles the flipping of a card
   // only 2 images can be flipped at once
   // a buffer is used to save 2 images at most
-  // when user selects 2 identical images, 
+  // when user selects 2 identical images,
   // they will be moved to the isDone Set
   function handleFlip(id, imageURL) {
     const newMap = new Map(cards);
@@ -84,7 +85,8 @@ export default function App() {
     setImages([]);
     setImageBuffer(new Map());
     setIsDone(new Set());
-    setTimer("00:20");
+    setTimer("");
+    setSeconds("");
 
     updateImages();
   }
@@ -95,7 +97,7 @@ export default function App() {
         spacing={2}
         sx={{ justifyContent: "center", alignItems: "center" }}
       >
-        <ImageList sx={{ width: 600, height: 520}} cols={4} rowHeight={164}>
+        <ImageList sx={{ width: 600, height: 520 }} cols={4} rowHeight={164}>
           {images.map((item, idx) => (
             <ImageListItem key={idx}>
               <img
@@ -112,9 +114,13 @@ export default function App() {
                 alt={item.title}
                 loading="lazy"
                 onClick={
-                  isDone.has(item.img) || timer === "00:00" ? null : () => handleFlip(idx, item.img)
+                  isDone.has(item.img) || timer === "00:00"
+                    ? null
+                    : () => handleFlip(idx, item.img)
                 }
-                className={`flip-card ${cards.get(idx) ? "back" : "front"} ${isDone.has(item.img) ? "highlight-correct" : ""}`}
+                className={`flip-card ${cards.get(idx) ? "back" : "front"} ${
+                  isDone.has(item.img) ? "highlight-correct" : ""
+                }`}
               />
             </ImageListItem>
           ))}
@@ -129,8 +135,18 @@ export default function App() {
           Try Again
         </Button>
         {isDone.size === UNIQUE_IMAGES_NUM && <Alert>You Won!</Alert>}
-        {(timer === "00:00" && isDone.size !== UNIQUE_IMAGES_NUM) && <Alert severity="error">Game Over!</Alert>}
-        <Timer timer={timer} setTimer={setTimer} isGameOver={isDone.size === UNIQUE_IMAGES_NUM || timer === "00:00"}/>
+        {timer === "00:00" && isDone.size !== UNIQUE_IMAGES_NUM && (
+          <Alert severity="error">Game Over!</Alert>
+        )}
+        {seconds && (
+          <Timer
+            seconds={seconds}
+            timer={timer}
+            setTimer={setTimer}
+            isGameOver={isDone.size === UNIQUE_IMAGES_NUM || timer === "00:00"}
+          />
+        )}
+        <BasicSelect seconds={seconds} setSeconds={setSeconds} />
       </Stack>
     </div>
   );
